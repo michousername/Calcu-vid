@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Calculator with Video Pop-up</title>
+  <link href="https://fonts.googleapis.com/css?family=Quicksand:400,700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Quicksand', Arial, sans-serif;
+      background: linear-gradient(120deg, #f8ffae 0%, #43c6ac 100%);
+      min-height: 100vh;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    #calculator {
+      background: #fff;
+      box-shadow: 0 8px 24px rgba(70,130,180,0.15), 0 1.5px 6px rgba(70,130,180,0.10);
+      padding: 32px 28px 24px 28px;
+      border-radius: 18px;
+      display: inline-block;
+      min-width: 300px;
+      transition: box-shadow 0.3s;
+    }
+    #calculator:hover {
+      box-shadow: 0 12px 36px rgba(70,130,180,0.18), 0 2px 8px rgba(70,130,180,0.14);
+    }
+    input[type="text"] {
+      width: 238px;
+      height: 44px;
+      font-size: 1.4em;
+      margin-bottom: 18px;
+      text-align: right;
+      background: #f3f3ff;
+      border: none;
+      border-radius: 8px;
+      box-shadow: 0 1px 2px rgba(43, 63, 83, 0.08);
+      padding: 0 12px;
+      color: #1a3b5d;
+      letter-spacing: 1px;
+    }
+    button {
+      width: 52px;
+      height: 44px;
+      font-size: 1.1em;
+      margin: 5px 4px;
+      background: linear-gradient(120deg, #e0c3fc 0%, #8ec5fc 100%);
+      border: none;
+      border-radius: 8px;
+      box-shadow: 0 1px 4px rgba(100,150,220,0.08);
+      color: #1a3b5d;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+    }
+    button:hover {
+      background: linear-gradient(120deg, #fff1eb 0%, #ace0f9 100%);
+      transform: scale(1.09);
+    }
+    button:active {
+      transform: scale(0.97);
+    }
+    /* Equal button */
+    #calculator button.equal-btn {
+      width: 238px;
+      background: linear-gradient(120deg, #fcb69f 0%, #ffecd2 100%);
+      color: #fff;
+      font-size: 1.25em;
+      letter-spacing: 1px;
+      margin-top: 12px;
+      margin-bottom: 2px;
+      box-shadow: 0 2px 8px rgba(245,133,103,0.09);
+    }
+    /* Modal styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 100;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      overflow: auto;
+      background: rgba(0,0,0,0.7);
+      animation: fadeIn 0.3s;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    .modal-content {
+      background: #fff;
+      margin: 7% auto;
+      padding: 24px 22px 16px 22px;
+      border-radius: 18px;
+      width: 410px;
+      box-shadow: 0 6px 24px rgba(80,80,120,0.16);
+      position: relative;
+      animation: popup 0.3s;
+    }
+    @keyframes popup {
+      from { transform: scale(0.85); }
+      to { transform: scale(1); }
+    }
+    .close {
+      color: #aaa;
+      position: absolute;
+      right: 18px;
+      top: 12px;
+      font-size: 32px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: color 0.2s;
+      user-select: none;
+    }
+    .close:hover { color: #ff7f50; }
+    .modal-content h3 {
+      margin-top: 0;
+      font-size: 1.25em;
+      font-weight: 700;
+      color: #43c6ac;
+      letter-spacing: 1px;
+    }
+    .modal-content video {
+      width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(70,130,180,0.10);
+      margin-top: 12px;
+    }
+    @media (max-width: 500px) {
+      .modal-content { width: 94vw; padding: 12px 8px 8px 8px;}
+      #calculator { min-width: 90vw;}
+      input[type="text"] { width: 90vw;}
+      .equal-btn { width: 90vw !important;}
+    }
+  </style>
+</head>
+<body>
+  <div id="calculator">
+    <input type="text" id="display" disabled>
+    <br>
+    <button onclick="append('7')">7</button>
+    <button onclick="append('8')">8</button>
+    <button onclick="append('9')">9</button>
+    <button onclick="append('/')">÷</button>
+    <br>
+    <button onclick="append('4')">4</button>
+    <button onclick="append('5')">5</button>
+    <button onclick="append('6')">6</button>
+    <button onclick="append('*')">×</button>
+    <br>
+    <button onclick="append('1')">1</button>
+    <button onclick="append('2')">2</button>
+    <button onclick="append('3')">3</button>
+    <button onclick="append('-')">−</button>
+    <br>
+    <button onclick="append('0')">0</button>
+    <button onclick="append('.')">.</button>
+    <button onclick="clearDisplay()">C</button>
+    <button onclick="append('+')">+</button>
+    <br>
+    <button class="equal-btn" onclick="calculate()">=</button>
+  </div>
+
+  <!-- The Modal -->
+  <div id="videoModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <h3>🥰🥰🥰</h3>
+      <video controls autoplay>
+        <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+  </div>
+
+  <script>
+    let display = document.getElementById('display');
+   
