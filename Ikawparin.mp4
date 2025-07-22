@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Calculator with Video Popup</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #74ebd5, #9face6);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .calculator {
+      background: #ffffffcc;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+      width: 300px;
+      text-align: center;
+    }
+
+    .calculator input {
+      width: 100%;
+      font-size: 2em;
+      padding: 10px;
+      border: none;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      text-align: right;
+      box-shadow: inset 0 0 5px rgba(0,0,0,0.1);
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    .buttons button {
+      padding: 20px;
+      font-size: 1.2em;
+      border: none;
+      border-radius: 10px;
+      background: #6c63ff;
+      color: white;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .buttons button:hover {
+      background: #574b90;
+    }
+
+    .popup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 999;
+    }
+
+    .popup video {
+      width: 80%;
+      max-width: 600px;
+      border: 4px solid white;
+      border-radius: 15px;
+    }
+
+    .popup.show {
+      display: flex;
+    }
+  </style>
+</head>
+<body>
+  <div class="calculator">
+    <input type="text" id="display" readonly />
+    <div class="buttons">
+      <button onclick="append('7')">7</button>
+      <button onclick="append('8')">8</button>
+      <button onclick="append('9')">9</button>
+      <button onclick="append('/')">÷</button>
+
+      <button onclick="append('4')">4</button>
+      <button onclick="append('5')">5</button>
+      <button onclick="append('6')">6</button>
+      <button onclick="append('*')">×</button>
+
+      <button onclick="append('1')">1</button>
+      <button onclick="append('2')">2</button>
+      <button onclick="append('3')">3</button>
+      <button onclick="append('-')">−</button>
+
+      <button onclick="append('0')">0</button>
+      <button onclick="append('.')">.</button>
+      <button onclick="clearDisplay()">C</button>
+      <button onclick="append('+')">+</button>
+
+      <button style="grid-column: span 4; background: #28a745;" onclick="calculate()">=</button>
+    </div>
+  </div>
+
+  <!-- Video Popup -->
+  <div class="popup" id="videoPopup">
+    <video controls autoplay>
+      <source src="ikawparin.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+  </div>
+
+  <script>
+    const display = document.getElementById("display");
+    const popup = document.getElementById("videoPopup");
+
+    function append(value) {
+      display.value += value;
+    }
+
+    function clearDisplay() {
+      display.value = "";
+    }
+
+    function calculate() {
+      try {
+        display.value = eval(display.value);
+        popup.classList.add("show");
+      } catch {
+        display.value = "Error";
+      }
+    }
+
+    popup.addEventListener("click", () => {
+      popup.classList.remove("show");
+    });
+  </script>
+</body>
+</html>
